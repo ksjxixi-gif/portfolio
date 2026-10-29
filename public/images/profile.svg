@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<rect width="800" height="1000" fill="#0d0d0d"/>
+<g opacity="0.5"><line x1="100" y1="0" x2="100" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="200" y1="0" x2="200" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="300" y1="0" x2="300" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="400" y1="0" x2="400" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="500" y1="0" x2="500" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="600" y1="0" x2="600" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="700" y1="0" x2="700" y2="1000" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="100" x2="800" y2="100" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="200" x2="800" y2="200" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="300" x2="800" y2="300" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="400" x2="800" y2="400" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="500" x2="800" y2="500" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="600" x2="800" y2="600" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="700" x2="800" y2="700" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="800" x2="800" y2="800" stroke="#2e2e2e" stroke-width="1"/><line x1="0" y1="900" x2="800" y2="900" stroke="#2e2e2e" stroke-width="1"/></g>
+<circle cx="400" cy="430" r="230" fill="none" stroke="#cfa355" stroke-width="1.5" opacity="0.6"/>
+<circle cx="400" cy="430" r="300" fill="none" stroke="#2e2e2e" stroke-width="1.5"/>
+<g transform="translate(162.0 192.0) scale(8.5)" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+  <polyline points="12,38 12,18 19.5,29 27,18 27,38" stroke="#e5e5e0"/>
+  <polyline points="29,38 36.5,18 44,38" stroke="#e5e5e0"/>
+  <line x1="31.6" y1="31" x2="41.4" y2="31" stroke="#cfa355"/>
+</g>
+<text x="60" y="860" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="38" font-weight="300" letter-spacing="6" fill="#e5e5e0">MOHAMMAD ABUKHADIJA</text>
+<text x="60" y="910" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" letter-spacing="5" fill="#8b8b73">AMMAN, JORDAN  /  31.95° N, 35.91° E</text>
+</svg>
