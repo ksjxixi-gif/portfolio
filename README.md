@@ -9,4 +9,3 @@ npm run dev
 
 Content lives in `src/constants/index.js` (services, projects, contact, socials) and the section files in `src/sections/`.
 
-Based on the open-source [awwwards-portfolio](https://github.com/Ali-Sanati/awwwards-portfolio) template.
