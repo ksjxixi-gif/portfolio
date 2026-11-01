@@ -1,11 +1,12 @@
 # Mohammad Abukhadija - Portfolio
 
-Personal portfolio. React (Vite), Tailwind CSS, GSAP, React Three Fiber.
+Personal site: work, expertise, security practice, and contact.
+
+React (Vite), Tailwind CSS, GSAP, and React Three Fiber. The hero graph draws one node per table in the production schema I designed.
 
 ```bash
 npm install
 npm run dev
 ```
 
-Content lives in `src/constants/index.js` (services, projects, contact, socials) and the section files in `src/sections/`.
-
+Content lives in `src/constants/index.js`; sections are in `src/sections/`.

@@ -1,56 +1,41 @@
-import React, { useEffect, useState } from "react";
+import ReactLenis from "lenis/react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "./sections/Navbar";
 import Hero from "./sections/Hero";
-import ServiceSummary from "./sections/ServiceSummary";
-import Services from "./sections/Services";
-import ReactLenis from "lenis/react";
-import About from "./sections/About";
 import Works from "./sections/Works";
-import ContactSummary from "./sections/ContactSummary";
+import Stack from "./sections/Stack";
+import Security from "./sections/Security";
+import About from "./sections/About";
 import Contact from "./sections/Contact";
-import { useProgress } from "@react-three/drei";
-import Stats from "./sections/Stats";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const App = () => {
-  const { progress } = useProgress();
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    if (progress === 100) {
-      setIsReady(true);
-    }
-  }, [progress]);
+  useGSAP(() => {
+    gsap.matchMedia().add("(prefers-reduced-motion: no-preference)", () => {
+      gsap.from(".hero-line", { yPercent: 100, opacity: 0, duration: 1.2, stagger: 0.08, ease: "expo.out", delay: 0.1 });
+      gsap.set(".reveal", { opacity: 0, y: 40 });
+      ScrollTrigger.batch(".reveal", {
+        start: "top 90%",
+        once: true,
+        onEnter: (els) => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: "power3.out" }),
+      });
+    });
+  });
 
   return (
-    <ReactLenis root className="relative w-screen min-h-screen overflow-x-auto">
-      {!isReady && (
-        <div className="fixed inset-0 z-[999] flex flex-col items-center justify-center bg-black text-white transition-opacity duration-700 font-light">
-          <p className="mb-4 text-xl tracking-widest animate-pulse">
-            Loading {Math.floor(progress)}%
-          </p>
-          <div className="relative h-1 overflow-hidden rounded w-60 bg-white/20">
-            <div
-              className="absolute top-0 left-0 h-full transition-all duration-300 bg-white"
-              style={{ width: `${progress}%` }}
-            ></div>
-          </div>
-        </div>
-      )}
-      <div
-        className={`${
-          isReady ? "opacity-100" : "opacity-0"
-        } transition-opacity duration-1000`}
-      >
-        <Navbar />
+    <ReactLenis root options={{ anchors: { offset: -64 } }}>
+      <Navbar />
+      <main>
         <Hero />
-        <ServiceSummary />
-        <Services />
-        <About />
         <Works />
-        <ContactSummary />
-        <Stats />
+        <Stack />
+        <Security />
+        <About />
         <Contact />
-      </div>
+      </main>
     </ReactLenis>
   );
 };

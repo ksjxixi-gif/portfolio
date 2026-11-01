@@ -1,62 +1,71 @@
-import { useRef } from "react";
-import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
-import { AnimatedTextLines } from "../components/AnimatedTextLines";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+import SectionHeader from "../components/SectionHeader";
 
-const About = () => {
-  const text = `Turning ambiguous requirements into
-    maintainable systems that run
-    in production.`;
-  const aboutText = `I'm a self-taught software engineer from Amman, Jordan. I started working at 15 (a real estate office, freelance marketing, a year on a support desk) and wrote code between shifts.
+const facts = [
+  ["Based in", "Amman, Jordan"],
+  ["Languages", "Arabic & English (native), French & Spanish (B1)"],
+  ["Education", "Self-directed, through production work"],
+];
 
-  Today I lead engineering at Nibras Legal Tech, where I own architecture and the final technical review for a production legal-tech SaaS platform: a 220+ table relational model, tenant-aware authorization, AI and Arabic OCR pipelines, and the Linux infrastructure it all runs on.
+const career = [
+  { when: "2026 - now", what: "Lead Software Engineer, Nibras Legal Tech", current: true },
+  { when: "self-taught", what: "Systems, databases, networking, Linux, AI" },
+  { when: "1 year", what: "Support desk, writing code between shifts" },
+  { when: "freelance", what: "Marketing" },
+  { when: "age 15", what: "First job, in a real estate office" },
+];
 
-  I'm at my best tracing failures across UI, APIs, databases, background jobs, networks, and containers until I find the real cause, and verifying end-to-end instead of trusting that the UI says it worked.`;
-  const imgRef = useRef(null);
-  useGSAP(() => {
-    gsap.to("#about", {
-      scale: 0.95,
-      scrollTrigger: {
-        trigger: "#about",
-        start: "bottom 80%",
-        end: "bottom 20%",
-        scrub: true,
-        markers: false,
-      },
-      ease: "power1.inOut",
-    });
-
-    gsap.set(imgRef.current, {
-      clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0% 100%)",
-    });
-    gsap.to(imgRef.current, {
-      clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-      duration: 2,
-      ease: "power4.out",
-      scrollTrigger: { trigger: imgRef.current },
-    });
-  });
-  return (
-    <section id="about" className="min-h-screen bg-black rounded-b-4xl">
-      <AnimatedHeaderSection
-        subTitle={"Craft in Details, Strength in Structure."}
-        title={"About"}
-        text={text}
-        textColor={"text-white"}
-        withScrollTrigger={true}
-      />
-      <div className="flex flex-col items-center justify-between gap-16 px-4 md:px-10 pb-16 text-xl font-light tracking-wide lg:flex-row-reverse md:text-2xl lg:text-3xl text-white/60">
-        <img
-          ref={imgRef}
-          src="images/profile.svg"
-          alt="Mohammad Abukhadija"
-          className="rounded-xl w-full lg:w-2/5"
-        />
-        <AnimatedTextLines text={aboutText} className={"w-full text-lg"} lineGap="pb-5 last:pb-0"/>
+const About = () => (
+  <section id="about" className="px-5 py-20 md:px-10 md:py-24">
+    <SectionHeader index="04" label="about" arabic="نبذة" title="Self-taught. Working since 15." />
+    <div className="grid gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]">
+      <div className="reveal">
+        <img src="/images/profile.svg" alt="Mohammad Abukhadija" className="w-full max-w-md rounded-2xl border border-line" />
+        <dl className="mt-6 max-w-md divide-y divide-line border-y border-line font-mono text-sm">
+          {facts.map(([label, value]) => (
+            <div key={label} className="flex justify-between gap-6 py-3">
+              <dt className="text-muted">{label}</dt>
+              <dd className="text-right">{value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
-    </section>
-  );
-};
+
+      <div className="flex flex-col gap-10">
+        <div className="reveal space-y-5 text-lg text-fg/80 md:text-xl">
+          <p>
+            I lead engineering at Nibras Legal Tech, where I own architecture and the final technical review for a
+            production legal-tech SaaS platform: a 186-table relational model, 715 API endpoints behind fail-closed
+            authorization, AI and Arabic OCR pipelines, and the Linux infrastructure it all runs on.
+          </p>
+          <p>
+            I&apos;m at my best turning ambiguous requirements into maintainable systems, and tracing failures across
+            UI, APIs, databases, background jobs, networks, and containers until I find the real cause. I verify end to
+            end instead of trusting that the UI says it worked.
+          </p>
+          <p>
+            I also commissioned and directed a full-platform engineering review covering every table, endpoint, and
+            screen (about 206,000 lines of code) and turned its findings into an ordered plan of work.
+          </p>
+        </div>
+
+        <div className="reveal rounded-2xl border border-line bg-surface p-5 md:p-7">
+          <p className="mb-6 font-mono text-xs text-muted">$ git log --career</p>
+          <ol className="font-mono text-sm">
+            {career.map((entry) => (
+              <li
+                key={entry.what}
+                className="relative grid grid-cols-[1rem_6.5rem_minmax(0,1fr)] gap-3 pb-6 before:absolute before:top-4 before:bottom-0 before:left-[3.5px] before:w-px before:bg-line last:pb-0 last:before:hidden"
+              >
+                <span className={`mt-1.5 size-2 rounded-full ${entry.current ? "bg-accent" : "border border-muted"}`} />
+                <span className="text-muted">{entry.when}</span>
+                <span className={entry.current ? "text-fg" : "text-fg/80"}>{entry.what}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+);
 
 export default About;

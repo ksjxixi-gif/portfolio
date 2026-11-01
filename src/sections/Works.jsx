@@ -1,190 +1,58 @@
-import { Icon } from "@iconify/react/dist/iconify.js";
-import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
 import { projects } from "../constants";
-import { useRef, useState } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
+import SectionHeader from "../components/SectionHeader";
 
-const Works = () => {
-  const overlayRefs = useRef([]);
-  const previewRef = useRef(null);
-
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const text = `Featured projects reflects my process of solving
-    real problems, Combining usability, performance,
-    and clean logic Work with purpose.`;
-
-  const mouse = useRef({ x: 0, y: 0 });
-  const moveX = useRef(null);
-  const moveY = useRef(null);
-
-  useGSAP(() => {
-    moveX.current = gsap.quickTo(previewRef.current, "x", {
-      duration: 1.5,
-      ease: "power3.out",
-    });
-    moveY.current = gsap.quickTo(previewRef.current, "y", {
-      duration: 2,
-      ease: "power3.out",
-    });
-
-    gsap.from("#project", {
-      y: 100,
-      opacity: 0,
-      delay: 0.5,
-      duration: 1,
-      stagger: 0.3,
-      ease: "back.out",
-      scrollTrigger: {
-        trigger: "#project",
-      },
-    });
-  }, []);
-
-  const handleMouseEnter = (index) => {
-    if (window.innerWidth < 768) return;
-    setCurrentIndex(index);
-
-    const el = overlayRefs.current[index];
-    if (!el) return;
-
-    gsap.killTweensOf(el);
-    gsap.fromTo(
-      el,
-      {
-        clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-      },
-      {
-        clipPath: "polygon(0 0, 100% 0, 100% 100%, 0% 100%)",
-        duration: 0.15,
-        ease: "power2.out",
-      }
-    );
-
-    gsap.to(previewRef.current, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
-
-  const handleMouseLeave = (index) => {
-    if (window.innerWidth < 768) return;
-    setCurrentIndex(null);
-
-    const el = overlayRefs.current[index];
-    if (!el) return;
-
-    gsap.killTweensOf(el);
-    gsap.to(el, {
-      clipPath: "polygon(0 100%, 100% 100%, 100% 100%, 0 100%)",
-      duration: 0.2,
-      ease: "power2.in",
-    });
-
-    gsap.to(previewRef.current, {
-      opacity: 0,
-      scale: 0.95,
-      duration: 0.3,
-      ease: "power2.out",
-    });
-  };
-
-  const handleMouseMove = (e) => {
-    if (window.innerWidth < 768) return;
-    mouse.current.x = e.clientX + 24;
-    mouse.current.y = e.clientY + 24;
-    moveX.current(mouse.current.x);
-    moveY.current(mouse.current.y);
-  };
-
-  return (
-    <section id="work" className="flex flex-col min-h-screen">
-      <AnimatedHeaderSection
-        subTitle={"Structure in Code, Story in Results."}
-        title={"Works"}
-        text={text}
-        textColor={"text-black"}
-        withScrollTrigger={true}
-      />
-      <div
-        className="relative flex flex-col font-light"
-        onMouseMove={handleMouseMove}
-      >
-        {projects.map((project, index) => (
-          <div
+const Works = () => (
+  <section id="work" className="px-5 py-20 md:px-10 md:py-24">
+    <SectionHeader index="01" label="work" arabic="مشاريع مختارة" title="Systems I've designed, built, and run." />
+    <div className="grid gap-5 md:grid-cols-2">
+      {projects.map((project, index) => {
+        // First card, and a last card that would sit alone in its row, span the full width.
+        const featured = index === 0 || (index === projects.length - 1 && projects.length % 2 === 0);
+        return (
+          <article
             key={project.id}
-            id="project"
-            className="relative flex flex-col gap-1 py-5 cursor-pointer group md:gap-0"
-            onMouseEnter={() => handleMouseEnter(index)}
-            onMouseLeave={() => handleMouseLeave(index)}
+            className={`reveal group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition-colors hover:border-accent/50 ${
+              featured ? "md:col-span-2 lg:grid lg:grid-cols-[1.5fr_1fr]" : ""
+            }`}
           >
-            {/* overlay */}
             <div
-              ref={(el) => {
-                overlayRefs.current[index] = el;
-              }}
-              className="absolute inset-0 hidden md:block duration-200 bg-black -z-10 clip-path"
-            />
-
-            {/* title */}
-            <div className="flex justify-between px-4 md:px-10 text-black transition-all duration-500 md:group-hover:px-12 md:group-hover:text-white">
-              <h2 className="lg:text-[32px] text-[26px] leading-none">
-                {project.name}
-              </h2>
-              {project.href && (
-                <a href={project.href} target="_blank" rel="noreferrer">
-                  <Icon
-                    icon="lucide:arrow-up-right"
-                    className="md:size-6 size-5"
-                  />
-                </a>
-              )}
+              className={`aspect-[1930/1080] overflow-hidden border-b border-line bg-bg ${
+                featured ? "lg:border-r lg:border-b-0" : ""
+              }`}
+            >
+              <img
+                src={project.image}
+                alt={`${project.name} cover`}
+                loading="lazy"
+                className="size-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              />
             </div>
-            {/* divider */}
-            <div className="w-full h-0.5 bg-black/80" />
-            {/* framework */}
-            <div className="flex flex-wrap px-4 md:px-10 text-xs leading-loose uppercase transtion-all duration-500 md:text-sm gap-x-5 gap-y-0 md:group-hover:px-12">
-              {project.frameworks.map((framework) => (
-                <p
-                  key={framework.id}
-                  className="text-black transition-colors duration-500 md:group-hover:text-white"
-                >
-                  {framework.name}
-                </p>
-              ))}
-            </div>
-            {/* mobile preview image */}
-            {project.image && (
-            <div className="px-4 md:px-10 md:hidden">
-              <div className="w-full aspect-[1930/1080] overflow-hidden rounded relative flex items-center justify-center">
-                <img
-                  src={project.image}
-                  alt={`${project.name}-image`}
-                  className="object-cover drop-shadow-2xl"
-                />
+            <div className="flex flex-1 flex-col gap-3 p-5 md:p-7">
+              <div className="flex items-baseline justify-between gap-4 font-mono text-xs text-muted">
+                <span>
+                  {String(index + 1).padStart(2, "0")} / {project.tagline}
+                </span>
+                {project.href && (
+                  <a href={project.href} target="_blank" rel="noreferrer" className="shrink-0 text-fg hover:text-accent">
+                    visit ↗
+                  </a>
+                )}
               </div>
+              <h3 className="text-2xl font-medium tracking-tight md:text-3xl">{project.name}</h3>
+              <p className="max-w-2xl text-muted">{project.description}</p>
+              <ul className="mt-auto flex flex-wrap gap-2 pt-3">
+                {project.frameworks.map((name) => (
+                  <li key={name} className="rounded-full border border-line px-2.5 py-1 font-mono text-xs text-fg/80">
+                    {name}
+                  </li>
+                ))}
+              </ul>
             </div>
-            )}
-          </div>
-        ))}
-        {/* desktop Flaoting preview image */}
-        <div
-          ref={previewRef}
-          className="fixed -top-2/6 left-0 z-50 overflow-hidden border-8 border-black pointer-events-none w-[520px] md:block hidden opacity-0"
-        >
-          {currentIndex !== null && projects[currentIndex].image && (
-            <img
-              src={projects[currentIndex].image}
-              alt="preview"
-              className="object-cover w-full h-full"
-            />
-          )}
-        </div>
-      </div>
-    </section>
-  );
-};
+          </article>
+        );
+      })}
+    </div>
+  </section>
+);
 
 export default Works;

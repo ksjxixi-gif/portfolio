@@ -1,67 +1,66 @@
-import { Canvas } from "@react-three/fiber";
-import { Planet } from "../components/Planet";
-import { Environment, Float, Lightformer } from "@react-three/drei";
-import { useMediaQuery } from "react-responsive";
-import AnimatedHeaderSection from "../components/AnimatedHeaderSection";
-const Hero = () => {
-  const isMobile = useMediaQuery({ maxWidth: 853 });
-  const text = `Lead software engineer building AI and platform systems
-Production legal-tech SaaS, from schema to servers
-Based in Amman, Jordan.`;
-  return (
-    <section id="home" className="flex flex-col justify-center md:justify-end min-h-screen">
-      <AnimatedHeaderSection
-        subTitle={"Lead Software Engineer | AI & Platform Engineer"}
-        title={"Mohammad Abukhadija"}
-        text={text}
-        textColor={"text-black"}
-        // Long name: scale with viewport so "ABUKHADIJA" never overflows
-        titleClassName="text-[min(14vw,152px)] leading-[0.63]"
-      />
-      <figure
-        className="absolute inset-0 -z-50"
-        style={{ width: "100vw", height: "100vh" }}
-      >
-        <Canvas
-          shadows
-          camera={{ position: [0, 0, -10], fov: 17.5, near: 1, far: 20 }}
+import { lazy, Suspense } from "react";
+import { contact } from "../constants";
+
+// three.js is the heaviest dependency; load it after the text has painted.
+const SchemaGraph = lazy(() => import("../components/SchemaGraph"));
+
+const stats = [
+  ["186", "tables in the schema"],
+  ["715", "API endpoints"],
+  ["2,634", "automated tests"],
+  ["50+", "projects delivered"],
+];
+
+const Hero = () => (
+  <section id="top" className="relative flex min-h-svh flex-col justify-end overflow-hidden px-5 pt-28 pb-10 md:px-10">
+    <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-40 md:left-[35%] md:opacity-100">
+      <Suspense fallback={null}>
+        <SchemaGraph />
+      </Suspense>
+    </div>
+    <p aria-hidden="true" className="absolute top-24 right-10 hidden font-mono text-xs text-muted md:block">
+      fig. 1 / 186 nodes, one per table. layout illustrative.
+    </p>
+
+    <div className="relative">
+      <p className="hero-line font-mono text-sm text-accent">~/amman $ whoami</p>
+      <h1 className="mt-6 text-[clamp(3rem,10vw,8.5rem)] leading-[0.9] font-medium tracking-[-0.045em]">
+        <span className="block overflow-hidden pb-[0.06em]">
+          <span className="hero-line block">Mohammad</span>
+        </span>
+        <span className="block overflow-hidden pb-[0.06em]">
+          <span className="hero-line block">Abukhadija</span>
+        </span>
+      </h1>
+      <p lang="ar" dir="rtl" className="hero-line mt-5 w-fit font-arabic text-2xl text-muted md:text-3xl">
+        محمد أبو خديجة
+      </p>
+      <p className="hero-line mt-8 max-w-xl text-lg text-fg/80 md:text-xl">
+        Lead Software Engineer and AI &amp; Platform Engineer. I design the schema, build the services and AI
+        pipelines, and run the servers a production legal-tech platform lives on.
+      </p>
+      <div className="hero-line mt-8 flex flex-wrap gap-3">
+        <a href="#work" className="rounded-full bg-accent px-5 py-2.5 font-medium text-black transition-colors hover:bg-fg">
+          See the work
+        </a>
+        <a
+          href={`mailto:${contact.email}`}
+          className="rounded-full border border-line px-5 py-2.5 transition-colors hover:border-fg"
         >
-          <ambientLight intensity={0.5} />
-          <Float speed={0.5}>
-            <Planet scale={isMobile ? 0.7 : 1} />
-          </Float>
-          <Environment resolution={256}>
-            <group rotation={[-Math.PI / 3, 4, 1]}>
-              <Lightformer
-                form={"circle"}
-                intensity={2}
-                position={[0, 5, -9]}
-                scale={10}
-              />
-              <Lightformer
-                form={"circle"}
-                intensity={2}
-                position={[0, 3, 1]}
-                scale={10}
-              />
-              <Lightformer
-                form={"circle"}
-                intensity={2}
-                position={[-5, -1, -1]}
-                scale={10}
-              />
-              <Lightformer
-                form={"circle"}
-                intensity={2}
-                position={[10, 1, 0]}
-                scale={16}
-              />
-            </group>
-          </Environment>
-        </Canvas>
-      </figure>
-    </section>
-  );
-};
+          Get in touch
+        </a>
+      </div>
+    </div>
+
+    <dl className="relative mt-14 grid grid-cols-2 gap-x-4 gap-y-6 border-t border-line pt-6 md:grid-cols-4">
+      {stats.map(([value, label]) => (
+        <div key={label} className="flex flex-col-reverse gap-1">
+          <dt className="font-mono text-xs text-muted">{label}</dt>
+          <dd className="text-2xl font-medium tracking-tight md:text-4xl">{value}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+);
 
 export default Hero;
